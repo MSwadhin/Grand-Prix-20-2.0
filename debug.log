@@ -1,0 +1,6 @@
+[0803/004627.307:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: The system cannot find the path specified. (0x3)
+[0803/004627.398:ERROR:registration_protocol_win.cc(131)] TransactNamedPipe: The pipe has been ended. (0x6D)
+[0803/004627.399:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: The system cannot find the path specified. (0x3)
+[0803/233942.346:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: The system cannot find the path specified. (0x3)
+[0803/233942.361:ERROR:registration_protocol_win.cc(131)] TransactNamedPipe: The pipe has been ended. (0x6D)
+[0803/233942.361:ERROR:crash_report_database_win.cc(580)] CreateDirectory C:\Program Files (x86)\Cuppat\Reports\Dump: The system cannot find the path specified. (0x3)
