@@ -41,7 +41,9 @@ var whiteList = [
     'rafidshahriar',
     'musanna_2',
     'arftdipto',
-	'rudro_hordoya'
+	'Strig',
+	'rudro_hordoya',
+	'sqL_slammer'
 ];
 
 var blackList = [
