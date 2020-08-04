@@ -40,7 +40,8 @@ var whiteList = [
     'Nushrat_Jahan',
     'rafidshahriar',
     'musanna_2',
-    'arftdipto'
+    'arftdipto',
+	'rudro_hordoya'
 ];
 
 var blackList = [
