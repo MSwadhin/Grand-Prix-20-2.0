@@ -27,6 +27,7 @@ class Participant{
             var toget = Math.ceil( (N*7.0) / 10.0 );
             var sz = this.contestPerformance.length;
             var len = Math.min(sz,toget);
+			console.log("Preparing :: " + this.handle);
             for(i=0;i<len;i++){
                 this.score += this.contestPerformance[i].score;
             }
@@ -42,21 +43,16 @@ class ContestRank{
 }
 
 
-function filterWhteBlack(participants){
+
+function filterParticipants(participants){
 
     var whiteParticipants = [];
     for(i=0;i<participants.length;i++){
-        if( participants[i].score > 0 ){
-            if( whiteList.includes( participants[i].handle ) ){
-                whiteParticipants.push(participants[i]);
-            }
-            else{
-                blackList.push(participants[i].handle);
-            }
-        }
+		if( whiteList.includes(participants[i].handle) ){
+			whiteParticipants.push(participants[i]);
+		}
     }
     return whiteParticipants;
-    // show(whiteParticipants);
 }
 
 
@@ -125,9 +121,20 @@ function generateStandings(participants,contestStandings){
     var noc = contestStandings.length;
     for(i=0;i<noc;i++){
 
-        var curStanding = contestStandings[i];
-        var len = curStanding.length;
+        var oStanding = contestStandings[i];
+        var len = oStanding.length;
+		var curStanding = [];
+		for(var l=0;l<len;l++){
+			var handle = oStanding[l].party.members[0].handle;
+			if( !whiteList.includes(handle) && !blackList.includes(handle) ){
+				blackList.push(handle);
+			}
+			else curStanding.push(oStanding[l]);
+		}
+		console.log(curStanding[i]);
+		len = curStanding.length;
         if( len > 0 ){
+			
             var counter = [];
             for(j=0;j<22;j++)counter[j] = 0;
             var cid = curStanding[0].party.contestId;
@@ -160,45 +167,55 @@ function generateStandings(participants,contestStandings){
                     scores[j] /= counter[j+1];
                 }
             }
-            console.log(counter);
-            console.log(scores);
             for(j=0;j<len;j++){
                 var handle = curStanding[j].party.members[0].handle;
-                rank = curStanding[j].rank;
-                score = scores[rank-1];
-                for(k=0;k<participants.length;k++){
-                    if( handle == participants[k].handle ){
-                        participants[k].contestPerformance.push(
-                            new Performance(
-                                cid,curStanding[j].rank,score
-                            )
-                        );
-                    }
-                }
+				console.log(handle);
+				rank = curStanding[j].rank;
+				score = scores[rank-1];
+				for(k=0;k<participants.length;k++){
+					if( handle == participants[k].handle ){
+						participants[k].contestPerformance.push(
+							new Performance(
+								cid,curStanding[j].rank,score
+							)
+						);
+					}
+				}
             }
         }
     }
 
 
     var tot = contestList.length;
-
-    participants[1].prepare(tot);
+	
+	
+	
+	
     for(var i=0;i<participants.length;i++){
         participants[i].prepare(tot);
     }
+	
+	participants = filterParticipants(participants);
 
-    participants.sort(
+	var participantsWithScore = [];
+	for(var i=0;i<participants.length;i++){
+		if(participants[i].score>0){
+			participantsWithScore.push(participants[i]);
+		}
+	}
+    participantsWithScore.sort(
         function (a,b){
             return b.score-a.score;
         }
     );
-
-
-
-    show( filterWhteBlack( participants ) );
+	
+	
+	
+	show( participantsWithScore );
     console.log(
         participants
     );
+	console.log(blackList);
 }
 
 
@@ -209,6 +226,7 @@ function getContestStandings(participants){
         if(i>0)handleOnUrl += ";";
         handleOnUrl += participants[i].handle;
     }
+	console.log(handleOnUrl);
     var total = contestList.length;
     var standings = [];
     var done = 0;
@@ -229,11 +247,15 @@ function getContestStandings(participants){
                 alert('Error Loading Contest ==> ' + contestId + ' :: ' + error );
             } );
     }
-
-
 }
 
 
+
+// function isContesttantValid(handle){
+	// if( whiteList.includes(handle) )return true;
+	// blackList.push(handle);
+	// return false;
+// }
 
 
 function getGPStanding(){
@@ -241,7 +263,7 @@ function getGPStanding(){
 
     for(i=0;i<100;i++)scoreToGet.push(1);
 
-    var url = 'https://codeforces.com/api/user.ratedList?activeOnly=true';
+    var url = 'https://codeforces.com/api/user.ratedList?activeOnly=false';
     fetch(url)
         .then( (resp) => resp.json() )
         .then( function(data){
@@ -250,27 +272,25 @@ function getGPStanding(){
             for(i=0;i<result.length;i++){
                 if( typeof(result[i].organization)==="undefined" )continue;
                 if( typeof(result[i].organization == "string") ){
-                    if( result[i].organization=="" )continue;
-                    if( result[i].organization.toLowerCase()==organization ){
-                        var user = result[i];
-                        var name = "";
-                        if( typeof(user.firstName) == "string" )name += user.firstName + " ";
-                        if( typeof(user.lastName) == "string" )name += user.lastName;
-                        participants.push(
-                            new Participant(
-                                user.handle,
-                                name,
-                                user.rating
-                            )
-                        );
-                    }
+					if( result[i].organization.toString().toLowerCase()==organization ){
+						var user = result[i];
+						var name = "";
+						if( typeof(user.firstName) == "string" )name += user.firstName + " ";
+						if( typeof(user.lastName) == "string" )name += user.lastName;
+						participants.push(
+							new Participant(
+								user.handle,
+								name,
+								user.rating
+							)
+						);
+					}
                 }
             }
-            getContestStandings(participants);
+			console.log(participants);
+			getContestStandings(participants);
         })
         .catch( function(error) {
             console.log(error);
         });
-
-
 }

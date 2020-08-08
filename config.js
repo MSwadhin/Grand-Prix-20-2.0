@@ -9,7 +9,8 @@ var contestList = [
     1375,
     1379,
     1389,
-    1388
+    1388,
+	1393
 ];
 
 var whiteList = [
