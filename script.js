@@ -78,7 +78,7 @@ function show(whiteParticipants){
         row += "<td>" + (p+1) + "</td>";
         row += "<td>" + cp.handle;
         if( cp.name != "" ){
-            row += "( "+cp.name + " )";
+            row += " ( "+cp.name + " )";
         }
         row += "</td>";
         row += "<td>"+ cp.score + "</td>";
@@ -116,8 +116,10 @@ function show(whiteParticipants){
 
 
 
-function generateStandings(participants,contestStandings){
+var generateStandings =  function (participants,contestStandings){
 
+
+    // alert("Generating");
     var noc = contestStandings.length;
     for(i=0;i<noc;i++){
 
@@ -189,8 +191,6 @@ function generateStandings(participants,contestStandings){
     var tot = contestList.length;
 	
 	
-	
-	
     for(var i=0;i<participants.length;i++){
         participants[i].prepare(tot);
     }
@@ -219,8 +219,20 @@ function generateStandings(participants,contestStandings){
 }
 
 
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
-function getContestStandings(participants){
+async function getStandings(url){
+
+	let response = await fetch(url);
+	let data = await response.json();
+	return data;
+}
+
+
+
+async function getContestStandings(participants){
     var handleOnUrl = "&handles=";
     for(i=0;i<participants.length;i++){
         if(i>0)handleOnUrl += ";";
@@ -230,32 +242,26 @@ function getContestStandings(participants){
     var total = contestList.length;
     var standings = [];
     var done = 0;
+    
     for(i=0;i<total;i++){
-        var contestId = contestList[i];
-        var url = 'https://codeforces.com/api/contest.standings?contestId=' + contestId + handleOnUrl;
-        fetch( url )
-            .then( (resp)=>resp.json() )
-            .then( function(data){
-                done++;
-                standings.push(data['result']['rows']);
-                if(done == total){
-                    generateStandings(participants,standings);
-                    console.log(standings);
-                }
-            } )
-            .catch( function( error ){
-                alert('Error Loading Contest ==> ' + contestId + ' :: ' + error );
-            } );
+        let contestId = contestList[i];
+        await sleep(300).then( ()=>{
+            var url = 'https://codeforces.com/api/contest.standings?contestId=' + contestId + handleOnUrl;
+			getStandings(url).then(
+				(data) => {
+					standings.push(data['result']['rows']);
+					done++;
+                    if(done == total){
+                        generateStandings(participants,standings);
+                        // console.log("Standings::");
+                        // console.log(standings);
+                    }
+				}
+			);
+		} );
     }
 }
 
-
-
-// function isContesttantValid(handle){
-	// if( whiteList.includes(handle) )return true;
-	// blackList.push(handle);
-	// return false;
-// }
 
 
 function getGPStanding(){
