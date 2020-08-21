@@ -13,7 +13,8 @@ var contestList = [
 	1393,
 	1391,
 	1398,
-	1392
+	1392,
+	1401
 ];
 
 var whiteList = [
@@ -50,7 +51,8 @@ var whiteList = [
 	'sqL_slammer',
 	'tanim005',
 	'_ALVY_',
-	'Salamance'
+	'Salamance',
+	'BrownDragon'
 ];
 
 var blackList = [
