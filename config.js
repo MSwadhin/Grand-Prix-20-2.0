@@ -14,7 +14,8 @@ var contestList = [
 	1391,
 	1398,
 	1392,
-	1401
+	1401,
+	1400
 ];
 
 var whiteList = [
