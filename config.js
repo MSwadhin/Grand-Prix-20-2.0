@@ -15,7 +15,15 @@ var contestList = [
 	1398,
 	1392,
 	1401,
-	1400
+	1400,
+	1407,
+	1406,
+	1419,
+	1420,
+	1408,
+	1422,
+	1427,
+	1430
 ];
 
 var whiteList = [
@@ -53,7 +61,10 @@ var whiteList = [
 	'tanim005',
 	'_ALVY_',
 	'Salamance',
-	'BrownDragon'
+	'BrownDragon',
+	'Gourango_Modak',
+	'rasel_kibria',
+	'Diganto46'
 ];
 
 var blackList = [
