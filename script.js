@@ -55,6 +55,12 @@ function filterParticipants(participants){
     return whiteParticipants;
 }
 
+/*
+Utility to Round up to 2 Dec place if needed
+*/
+function roundToTwo(num) {    
+    return +(Math.round(num + "e+2")  + "e-2");
+}
 
 function show(whiteParticipants){
     contestList.reverse();
@@ -81,7 +87,7 @@ function show(whiteParticipants){
             row += " ( "+cp.name + " )";
         }
         row += "</td>";
-        row += "<td>"+ cp.score + "</td>";
+        row += "<td>"+ roundToTwo(cp.score) + "</td>";
 
         for(c=0;c<contestList.length;c++){
             var found = 0;
@@ -90,7 +96,7 @@ function show(whiteParticipants){
             for(i=0;i<cp.contestPerformance.length;i++){
                 if( cp.contestPerformance[i].contestId == cid ){
                     found = 1;
-                    sc = cp.contestPerformance[i].score;
+                    sc = roundToTwo(cp.contestPerformance[i].score);
                     break;
                 }
             }
