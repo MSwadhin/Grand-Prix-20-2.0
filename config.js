@@ -78,7 +78,18 @@ var whiteList = [
 	'Gourango_Modak',
 	'rasel_kibria',
 	'Diganto46',
-	'musanna_nafis'
+	'musanna_nafis',
+	'hafiz_samrat',
+	'sadik',
+	'Olium',
+	'llehctim',
+	'Tanim',
+	'turzo_sawroop',
+	'sinbad',
+	'Alvy',
+	'J_A_W_A',
+	'samiul_islam_rohan',
+	''
 ];
 
 var blackList = [
